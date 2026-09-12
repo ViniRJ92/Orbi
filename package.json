@@ -1,0 +1,79 @@
+{
+  "name": "orbi",
+  "version": "1.0.0",
+  "description": "Orbi: hub para centralizar múltiplas contas e serviços web (WhatsApp e mais) em sessões isoladas. Criado por Vinicius Braga.",
+  "author": "Vinicius Braga",
+  "creator": "Vinicius Braga",
+  "license": "UNLICENSED",
+  "private": true,
+  "main": "dist/main/main.js",
+  "scripts": {
+    "typecheck:main": "tsc -p tsconfig.json --noEmit",
+    "typecheck:renderer": "tsc -p tsconfig.renderer.json",
+    "typecheck": "npm run typecheck:main && npm run typecheck:renderer",
+    "build:main": "npm run typecheck:main && node scripts/build-main.mjs",
+    "build:renderer": "npm run typecheck:renderer && vite build",
+    "build": "npm run build:main && npm run build:renderer",
+    "dev:renderer": "vite",
+    "start": "npm run build && electron .",
+    "dist:win": "npm run build && electron-builder --win"
+  },
+  "devDependencies": {
+    "@fontsource/inter": "^5.1.1",
+    "@fontsource/jetbrains-mono": "^5.1.2",
+    "@types/node": "^20.14.9",
+    "@types/react": "^19.2.18",
+    "@types/react-dom": "^19.2.5",
+    "@vitejs/plugin-react": "^6.1.0",
+    "autoprefixer": "^10.4.20",
+    "electron": "^31.0.2",
+    "electron-builder": "^24.13.3",
+    "electron-updater": "^6.8.9",
+    "esbuild": "^0.28.2",
+    "framer-motion": "^13.1.1",
+    "material-symbols": "^0.28.2",
+    "postcss": "^8.4.49",
+    "react": "^19.2.8",
+    "react-dom": "^19.2.8",
+    "tailwindcss": "^3.4.17",
+    "typescript": "^5.5.3",
+    "vite": "^8.2.2",
+    "zustand": "^5.0.15"
+  },
+  "build": {
+    "appId": "com.viniciusbraga.orbiswitstack",
+    "productName": "Orbi",
+    "copyright": "Copyright © 2026 Vinicius Braga",
+    "publish": {
+      "provider": "github",
+      "owner": "ViniRJ92",
+      "repo": "Orbi"
+    },
+    "directories": {
+      "output": "release"
+    },
+    "win": {
+      "target": [
+        "nsis"
+      ],
+      "icon": "assets/icon.ico"
+    },
+    "nsis": {
+      "oneClick": false,
+      "perMachine": false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true,
+      "shortcutName": "Orbi",
+      "artifactName": "Orbi-Setup-${version}.exe",
+      "uninstallDisplayName": "Orbi",
+      "include": "build/installer.nsh"
+    },
+    "files": [
+      "dist/**/*",
+      "assets/**/*",
+      "package.json",
+      "!node_modules/**/*"
+    ]
+  }
+}

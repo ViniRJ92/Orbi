@@ -1,0 +1,194 @@
+/*
+ * Fontes embutidas no app (sem rede): Inter para interface, JetBrains Mono
+ * para dados operacionais e Material Symbols Outlined para os ícones — as
+ * mesmas três famílias usadas nas telas do Google Stitch.
+ */
+@import '@fontsource/inter/400.css';
+@import '@fontsource/inter/500.css';
+@import '@fontsource/inter/600.css';
+@import '@fontsource/inter/700.css';
+@import '@fontsource/jetbrains-mono/400.css';
+@import '@fontsource/jetbrains-mono/500.css';
+@import '@fontsource/jetbrains-mono/600.css';
+@import '@fontsource/jetbrains-mono/700.css';
+@import 'material-symbols/outlined.css';
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/*
+ * Paleta "Tactical NOC". O tema escuro é exatamente o HEX do Stitch
+ * (canais RGB para permitir as opacidades `/15`, `/40` etc. das classes).
+ * O tema claro existe porque Claro/Sistema são opções reais do Orbi.
+ * Orbi — Criado por Vinicius Braga
+ */
+:root {
+  --c-inverse-surface: 221 227 237;
+  --c-secondary-fixed-dim: 0 220 230;
+  --c-surface-container-low: 22 28 35;
+  --c-on-tertiary-container: 0 90 60;
+  --c-tertiary-fixed-dim: 78 222 163;
+  --c-surface-bright: 52 58 66;
+  --c-on-surface: 221 227 237;
+  --c-on-secondary-fixed: 0 32 34;
+  --c-secondary: 220 253 255;
+  --c-error-container: 147 0 10;
+  --c-tertiary: 104 245 184;
+  --c-inverse-on-surface: 43 49 57;
+  --c-outline-variant: 60 74 63;
+  --c-on-secondary: 0 55 58;
+  --c-surface-container-high: 37 42 50;
+  --c-on-tertiary-fixed-variant: 0 82 54;
+  --c-primary-fixed: 89 255 164;
+  --c-primary: 69 249 156;
+  --c-on-background: 221 227 237;
+  --c-on-secondary-container: 0 106 111;
+  --c-primary-container: 0 220 130;
+  --c-on-tertiary-fixed: 0 33 19;
+  --c-background: 14 20 27;
+  --c-on-error: 105 0 5;
+  --c-on-primary-fixed-variant: 0 82 45;
+  --c-inverse-primary: 0 109 62;
+  --c-on-primary-container: 0 91 50;
+  --c-secondary-fixed: 111 246 255;
+  --c-surface-variant: 47 53 61;
+  --c-on-tertiary: 0 56 36;
+  --c-on-primary-fixed: 0 33 15;
+  --c-surface-container-highest: 47 53 61;
+  --c-error: 255 180 171;
+  --c-surface-dim: 14 20 27;
+  --c-primary-fixed-dim: 28 227 136;
+  --c-on-secondary-fixed-variant: 0 79 83;
+  --c-on-primary: 0 57 29;
+  --c-surface-container: 26 32 39;
+  --c-outline: 133 149 135;
+  --c-surface: 14 20 27;
+  --c-surface-tint: 28 227 136;
+  --c-secondary-container: 0 241 253;
+  --c-on-error-container: 255 218 214;
+  --c-tertiary-container: 70 216 157;
+  --c-tertiary-fixed: 111 251 190;
+  --c-surface-container-lowest: 9 15 22;
+  --c-on-surface-variant: 186 203 188;
+  color-scheme: dark;
+}
+
+:root[data-theme='light'] {
+  --c-inverse-surface: 43 49 57;
+  --c-secondary-fixed-dim: 0 128 136;
+  --c-surface-container-low: 240 243 246;
+  --c-on-tertiary-container: 0 33 19;
+  --c-tertiary-fixed-dim: 0 135 90;
+  --c-surface-bright: 255 255 255;
+  --c-on-surface: 16 22 29;
+  --c-on-secondary-fixed: 0 32 34;
+  --c-secondary: 0 105 110;
+  --c-error-container: 255 218 214;
+  --c-tertiary: 0 122 82;
+  --c-inverse-on-surface: 238 241 244;
+  --c-outline-variant: 195 205 198;
+  --c-on-secondary: 255 255 255;
+  --c-surface-container-high: 225 230 235;
+  --c-on-tertiary-fixed-variant: 201 245 222;
+  --c-primary-fixed: 0 158 94;
+  --c-primary: 0 122 71;
+  --c-on-background: 16 22 29;
+  --c-on-secondary-container: 0 32 34;
+  --c-primary-container: 0 196 116;
+  --c-on-tertiary-fixed: 0 33 19;
+  --c-background: 245 247 250;
+  --c-on-error: 255 255 255;
+  --c-on-primary-fixed-variant: 201 245 222;
+  --c-inverse-primary: 69 249 156;
+  --c-on-primary-container: 0 45 24;
+  --c-secondary-fixed: 0 124 131;
+  --c-surface-variant: 216 222 228;
+  --c-on-tertiary: 255 255 255;
+  --c-on-primary-fixed: 0 33 15;
+  --c-surface-container-highest: 216 222 228;
+  --c-error: 186 26 26;
+  --c-surface-dim: 229 233 238;
+  --c-primary-fixed-dim: 0 168 98;
+  --c-on-secondary-fixed-variant: 0 79 83;
+  --c-on-primary: 255 255 255;
+  --c-surface-container: 233 237 241;
+  --c-outline: 107 122 112;
+  --c-surface: 245 247 250;
+  --c-surface-tint: 0 168 98;
+  --c-secondary-container: 0 170 180;
+  --c-on-error-container: 65 0 2;
+  --c-tertiary-container: 70 216 157;
+  --c-tertiary-fixed: 0 135 90;
+  --c-surface-container-lowest: 255 255 255;
+  --c-on-surface-variant: 68 82 74;
+  color-scheme: light;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+}
+
+body {
+  overscroll-behavior: none;
+}
+
+/* Stitch: barras de rolagem invisíveis (a rolagem continua funcionando). */
+::-webkit-scrollbar {
+  display: none;
+}
+
+.material-symbols-outlined {
+  font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+  user-select: none;
+}
+.material-symbols-outlined.icon-fill {
+  font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+}
+
+/* Janela sem moldura: o cabeçalho é a área de arrastar. */
+.app-drag {
+  -webkit-app-region: drag;
+}
+.app-no-drag {
+  -webkit-app-region: no-drag;
+}
+
+/* Números tabulares em dados operacionais (DESIGN.md). */
+.font-code-sm,
+.font-metric-md,
+.font-metric-xl,
+.font-badge-micro,
+.font-label-sm {
+  font-feature-settings: 'tnum' on, 'zero' on;
+}
+
+/* Campos de data/hora do formulário da Agenda: o ícone do Stitch fica à
+   esquerda e o seletor nativo continua abrindo ao clicar em qualquer ponto. */
+.native-picker::-webkit-calendar-picker-indicator {
+  position: absolute;
+  inset: 0;
+  width: auto;
+  height: auto;
+  opacity: 0;
+  cursor: pointer;
+}
+
+input[type='number']::-webkit-inner-spin-button,
+input[type='number']::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+button:focus-visible,
+input:focus-visible,
+select:focus-visible,
+[tabindex]:focus-visible {
+  outline: 1px solid rgb(var(--c-primary-container));
+  outline-offset: 1px;
+}
