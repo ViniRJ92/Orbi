@@ -50,13 +50,10 @@ function UnreadBadge({ account, status }: { account: AccountRecord; status: Acco
   // Não lidas só existem para o WhatsApp (título da página "(N) WhatsApp").
   if (account.service !== 'whatsapp') return null;
   const count = status?.unreadCount ?? 0;
+  // Só aparece quando há algo para ler: um "0" em cada conta era ruído.
+  if (count <= 0) return null;
   return (
-    <span
-      className={
-        'rounded-full px-1.5 font-badge-micro text-badge-micro font-bold ' +
-        (count > 0 ? 'bg-primary-container text-on-primary-container' : 'bg-surface-container-high text-on-surface-variant')
-      }
-    >
+    <span className="rounded-full bg-primary-container px-1.5 font-badge-micro text-badge-micro font-bold text-on-primary-container">
       {count > 99 ? '99+' : count}
     </span>
   );
@@ -82,6 +79,10 @@ function VerticalItem({
   const t = TONE_STYLES[tone];
   const spec = ITEM_SPECS[iconSize];
   const isActive = !!status?.isActive;
+  const statusLine = accountStatusLabel(account, status);
+  // A bolinha já indica o estado; a segunda linha só aparece quando traz algo
+  // além disso (telefone, QR pendente numa instância aberta, suspensa, erro).
+  const showStatusLine = tone === 'sync' || tone === 'error' || tone === 'suspended' || !!account.phone;
 
   return (
     <li
@@ -107,7 +108,7 @@ function VerticalItem({
           (drag.isOver ? ' ring-1 ring-primary/60' : '')
         }
       >
-        <div className={'flex items-center justify-between gap-space-xs ' + (iconSize === 'small' ? '' : 'mb-1')}>
+        <div className={'flex items-center justify-between gap-space-xs ' + (iconSize !== 'small' && showStatusLine ? 'mb-0.5' : '')}>
           <div className="flex min-w-0 items-center gap-space-xs">
             <span className={`h-2 w-2 flex-shrink-0 rounded-full ${t.dot}`} />
             <AccountAvatar account={account} size={spec.avatar} glyph={spec.glyph} className="bg-surface-container-high" />
@@ -132,15 +133,15 @@ function VerticalItem({
             <UnreadBadge account={account} status={status} />
           </div>
         </div>
-        {iconSize !== 'small' && (
+        {iconSize !== 'small' && showStatusLine && (
           <div className="flex items-center justify-between gap-space-xs pl-3">
-            <span className={`truncate font-code-sm text-outline ${spec.line} ${tone === 'error' ? '!text-error' : ''}`}>
-              {accountStatusLabel(account, status)}
+            <span className={`truncate font-body-sm text-outline ${spec.line} ${tone === 'error' ? '!text-error' : ''}`}>
+              {statusLine}
             </span>
             <div className="flex flex-shrink-0 items-center gap-1.5">
               {index < 9 && tone !== 'error' && (
                 <span className="hidden font-badge-micro text-badge-micro text-outline-variant group-hover:inline">
-                  CTRL+{index + 1}
+                  Ctrl+{index + 1}
                 </span>
               )}
               {tone === 'error' && (
@@ -154,10 +155,9 @@ function VerticalItem({
                   title="Tentar de novo"
                 >
                   <Icon name="refresh" className="text-[12px]" />
-                  RECARREGAR
+                  Recarregar
                 </button>
               )}
-              <span className={`font-badge-micro text-badge-micro uppercase ${t.text}`}>{t.tag}</span>
             </div>
           </div>
         )}
@@ -207,7 +207,6 @@ function HorizontalItem({
         <span className={`text-on-surface transition-colors ${spec.name} ${t.hoverText}`}>{account.name}</span>
         {account.favorite && <Icon name="star" fill className="text-[13px] text-secondary-fixed-dim" />}
         <UnreadBadge account={account} status={status} />
-        <span className={`font-badge-micro text-badge-micro uppercase ${t.text}`}>{t.tag}</span>
       </div>
     </li>
   );
@@ -244,7 +243,6 @@ export function Sidebar({ position }: { position: SidebarPosition }) {
 
   const filterCounts = useFilterCounts(accounts, statuses);
   const visibleAccounts = useFilteredAccounts(accounts, statuses, searchQuery, filter);
-  const onlineCount = filterCounts.online;
   const filterActive = filter !== 'all' || searchQuery.trim().length > 0;
 
   // --- Rolagem horizontal (Topo/Inferior) com setas nas pontas ---
@@ -428,10 +426,7 @@ export function Sidebar({ position }: { position: SidebarPosition }) {
         }
       >
         <div className="flex flex-shrink-0 items-center gap-space-xs">
-          <span className="font-label-sm text-label-sm uppercase tracking-wider text-on-surface-variant">CONTAS</span>
-          <span className="rounded-full bg-surface-container-high px-1.5 py-0.5 font-badge-micro text-badge-micro text-primary">
-            {onlineCount} ON
-          </span>
+          <span className="font-title-md text-title-md font-semibold text-on-surface-variant">Contas</span>
           <button
             type="button"
             onClick={() => setFilterOpen((v) => !v)}
@@ -531,14 +526,7 @@ export function Sidebar({ position }: { position: SidebarPosition }) {
       />
       <div className="flex min-h-0 flex-1 flex-col">
         <div className="flex items-center justify-between px-space-md py-space-sm">
-          <div className="flex min-w-0 items-center gap-space-xs">
-            <span className="truncate font-label-sm text-label-sm uppercase tracking-wider text-on-surface-variant">
-              CONTAS CONECTADAS
-            </span>
-            <span className="flex-shrink-0 rounded-full bg-surface-container-high px-1.5 py-0.5 font-badge-micro text-badge-micro text-primary">
-              {onlineCount} ON
-            </span>
-          </div>
+          <span className="truncate font-title-md text-title-md font-semibold text-on-surface-variant">Contas</span>
           <button
             type="button"
             aria-label="Filtrar contas"
@@ -632,12 +620,8 @@ export function Sidebar({ position }: { position: SidebarPosition }) {
                         className={'text-[16px] ' + (g.color ? '' : 'text-on-surface-variant')}
                         style={g.color ? { color: g.color } : undefined}
                       />
-                      <span className="flex-1 truncate font-label-sm text-label-sm uppercase tracking-wider text-on-surface-variant">
-                        {g.name}
-                      </span>
-                      <span className="rounded-full bg-surface-container-high px-1.5 py-0.5 font-badge-micro text-badge-micro text-on-surface-variant">
-                        {list.length}
-                      </span>
+                      <span className="flex-1 truncate font-body-sm text-body-sm font-medium text-on-surface-variant">{g.name}</span>
+                      {collapsed && <span className="font-body-sm text-body-sm text-outline">{list.length}</span>}
                     </button>
                     {!collapsed && (
                       <ul className="mt-1 space-y-1">

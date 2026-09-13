@@ -29,7 +29,7 @@ export function UpdatesTab() {
             <Icon name="deployed_code" className="text-[22px]" />
           </div>
           <div className="flex flex-col">
-            <span className="font-label-sm text-label-sm uppercase tracking-wider text-on-surface-variant">Versão instalada</span>
+            <span className="font-body-sm text-body-sm text-on-surface-variant">Versão instalada</span>
             <span className="font-title-md text-title-md font-semibold text-on-surface">Orbi</span>
           </div>
         </div>

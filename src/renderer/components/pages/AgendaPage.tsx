@@ -151,9 +151,6 @@ export function AgendaPage() {
             <div className="flex items-center gap-space-xs rounded bg-primary-container/10 px-space-sm py-1">
               <Icon name="calendar_month" className="text-[20px] text-primary" />
               <span className="font-headline-sm text-headline-sm font-semibold tracking-tight text-on-surface">Agenda</span>
-              <span className="rounded bg-surface-container-high px-1.5 py-0.5 font-badge-micro text-badge-micro font-bold uppercase tracking-wider text-primary">
-                NESTE PC
-              </span>
             </div>
             <div className="hidden h-5 w-px bg-surface-container-highest sm:block" />
             <div className="flex items-center gap-space-xs">
@@ -169,7 +166,7 @@ export function AgendaPage() {
                 <button
                   type="button"
                   onClick={() => setCursor(new Date())}
-                  className="h-7 rounded px-space-sm font-label-sm text-label-sm uppercase tracking-wider text-on-surface transition-colors hover:bg-surface-container-high"
+                  className="h-7 rounded px-space-sm font-label-sm text-label-sm text-on-surface transition-colors hover:bg-surface-container-high"
                 >
                   Hoje
                 </button>
@@ -244,9 +241,7 @@ export function AgendaPage() {
 
             <div className="flex flex-col gap-space-sm rounded bg-surface-container-low p-space-md shadow-sm">
               <div className="flex items-center justify-between">
-                <span className="font-label-sm text-label-sm font-semibold uppercase tracking-wider text-on-surface-variant">
-                  PRÓXIMOS COMPROMISSOS
-                </span>
+                <span className="font-title-md text-title-md font-semibold text-on-surface-variant">Próximos compromissos</span>
                 <Icon name="notifications" className="text-[16px] text-on-surface-variant" />
               </div>
               {proximos.length === 0 ? (
@@ -291,10 +286,8 @@ export function AgendaPage() {
 
             <div className="flex flex-col gap-space-xs rounded bg-surface-container-low p-space-md shadow-sm">
               <div className="flex items-center justify-between">
-                <span className="font-label-sm text-label-sm font-semibold uppercase tracking-wider text-on-surface-variant">CATEGORIAS</span>
-                <span className="rounded bg-surface-container px-1.5 py-0.5 font-badge-micro text-badge-micro text-tertiary">
-                  {events.length} NO PERÍODO
-                </span>
+                <span className="font-title-md text-title-md font-semibold text-on-surface-variant">Categorias</span>
+                <span className="font-body-sm text-body-sm text-outline">{events.length} no período</span>
               </div>
               <div className="mt-space-xs flex flex-col gap-1">
                 {EVENT_CATEGORIES.map((c) => (

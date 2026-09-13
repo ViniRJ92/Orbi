@@ -11,7 +11,6 @@
  */
 import { SettingsTabKey, useAppStore } from '../../../store/useAppStore';
 import { usePageEscape } from '../../../usePageEscape';
-import { formatBytes } from '../../../format';
 import { Icon } from '../../ui/Icon';
 import { useDiagnostics } from './useDiagnostics';
 import { GeneralTab } from './GeneralTab';
@@ -21,68 +20,41 @@ import { BackupTab } from './BackupTab';
 import { UpdatesTab } from './UpdatesTab';
 import { AboutTab } from './AboutTab';
 
-const TABS: { key: SettingsTabKey; label: string; icon: string; crumb: string }[] = [
-  { key: 'general', label: 'Geral & Aparência', icon: 'palette', crumb: 'PREFERÊNCIAS & APARÊNCIA' },
-  { key: 'instances', label: 'Instâncias & Grupos', icon: 'hub', crumb: 'INSTÂNCIAS & AGRUPAMENTOS' },
-  { key: 'performance', label: 'Desempenho & Avisos', icon: 'notifications_active', crumb: 'DESEMPENHO & NOTIFICAÇÕES' },
-  { key: 'backup', label: 'Backup & Diagnóstico', icon: 'database', crumb: 'BACKUP & DIAGNÓSTICO' },
-  { key: 'updates', label: 'Atualizações', icon: 'system_update_alt', crumb: 'ATUALIZAÇÕES' },
-  { key: 'about', label: 'Sobre o Orbi', icon: 'info', crumb: 'SOBRE O ORBI' },
+const TABS: { key: SettingsTabKey; label: string; icon: string }[] = [
+  { key: 'general', label: 'Geral & Aparência', icon: 'palette' },
+  { key: 'instances', label: 'Instâncias & Grupos', icon: 'hub' },
+  { key: 'performance', label: 'Desempenho & Avisos', icon: 'notifications_active' },
+  { key: 'backup', label: 'Backup & Diagnóstico', icon: 'database' },
+  { key: 'updates', label: 'Atualizações', icon: 'system_update_alt' },
+  { key: 'about', label: 'Sobre o Orbi', icon: 'info' },
 ];
 
 export function SettingsPage() {
   const tab = useAppStore((s) => s.settingsTab);
   const setTab = useAppStore((s) => s.setSettingsTab);
   const appInfo = useAppStore((s) => s.appInfo);
-  const accounts = useAppStore((s) => s.accounts);
-  const statuses = useAppStore((s) => s.statuses);
   const updateState = useAppStore((s) => s.updateState);
   const diagnostics = useDiagnostics(5000);
 
   usePageEscape();
 
-  const online = accounts.filter((a) => statuses.get(a.id)?.isOnline).length;
   const hasUpdate = updateState.phase === 'available' || updateState.phase === 'downloading' || updateState.phase === 'downloaded';
-  const updateBadge =
-    updateState.phase === 'not-available'
-      ? { text: 'UP-TO-DATE', cls: 'bg-surface-container-high text-primary' }
-      : hasUpdate
-        ? { text: 'NOVA VERSÃO', cls: 'bg-error/15 text-error' }
-        : updateState.phase === 'error'
-          ? { text: 'ERRO', cls: 'bg-error/15 text-error' }
-          : null;
-  const current = TABS.find((t) => t.key === tab) ?? TABS[0];
-  const ramPct = diagnostics && diagnostics.systemMemoryBytes > 0 ? (diagnostics.memoryBytes / diagnostics.systemMemoryBytes) * 100 : 0;
+  const updateBadge = hasUpdate
+    ? { text: 'Nova versão', cls: 'bg-error/15 text-error' }
+    : updateState.phase === 'error'
+      ? { text: 'Erro', cls: 'bg-error/15 text-error' }
+      : null;
 
   return (
     <div className="h-full overflow-y-auto px-space-lg pb-space-xl pt-space-md">
       <div className="flex w-full flex-col">
-        <div className="mb-space-lg flex flex-col justify-between gap-space-sm md:flex-row md:items-center">
-          <div>
-            <div className="mb-1 flex items-center gap-space-xs font-label-sm text-label-sm uppercase tracking-wider text-on-surface-variant">
-              <span>SISTEMA</span>
-              <span>/</span>
-              <span className="font-bold text-primary">{current.crumb}</span>
-            </div>
-            <h1 className="flex items-center gap-space-xs font-headline-lg text-headline-lg font-semibold tracking-tight text-on-surface">
-              Central de Configurações
-              <span className="rounded-full bg-primary/10 px-2 py-0.5 font-badge-micro text-badge-micro font-bold uppercase tracking-normal text-primary">
-                ORBI v{appInfo?.version ?? ''}
-              </span>
-            </h1>
-          </div>
-          <div className="flex items-center gap-1.5 rounded-lg bg-surface-container-high px-space-md py-1.5 font-title-md text-title-md font-medium text-on-surface-variant shadow-sm">
-            <Icon name="bolt" className="text-[16px] text-primary" />
-            <span>Alterações salvas automaticamente</span>
-          </div>
+        <div className="mb-space-lg flex items-baseline gap-space-sm">
+          <h1 className="font-headline-lg text-headline-lg font-semibold tracking-tight text-on-surface">Configurações</h1>
+          <span className="font-body-sm text-body-sm text-outline">Orbi v{appInfo?.version ?? ''}</span>
         </div>
 
         <div className="grid grid-cols-1 gap-space-md rounded-xl bg-surface-container-low p-space-sm shadow-xl lg:grid-cols-12">
           <nav aria-label="Abas de Configuração" className="flex flex-col gap-1 rounded-lg bg-surface-container-lowest p-space-xs lg:col-span-3">
-            <div className="mb-1 flex items-center justify-between px-space-md py-space-sm">
-              <span className="font-label-sm text-label-sm uppercase tracking-wider text-outline">Módulos do Sistema</span>
-              <span className="h-2 w-2 animate-pulse rounded-full bg-primary shadow-[0_0_6px_rgba(0,220,130,0.8)]" />
-            </div>
             {TABS.map((t) => {
               const active = t.key === tab;
               return (
@@ -101,47 +73,17 @@ export function SettingsPage() {
                     <Icon name={t.icon} className="text-[18px]" />
                     <span className="truncate font-title-md text-title-md">{t.label}</span>
                   </div>
-                  {active ? (
-                    <span className="h-1.5 w-1.5 flex-shrink-0 rounded-full bg-primary" />
-                  ) : t.key === 'instances' ? (
-                    <span className="flex-shrink-0 rounded bg-surface-container-low px-1.5 py-0.5 font-badge-micro text-badge-micro text-outline">
-                      {online} LIVE
-                    </span>
-                  ) : t.key === 'performance' && diagnostics ? (
-                    <span className="flex-shrink-0 rounded bg-surface-container-low px-1.5 py-0.5 font-badge-micro text-badge-micro text-secondary-fixed-dim">
-                      {diagnostics.cpuPercent}% CPU
-                    </span>
-                  ) : t.key === 'updates' && updateBadge ? (
-                    <span className={`flex-shrink-0 rounded px-1.5 py-0.5 font-badge-micro text-badge-micro font-bold ${updateBadge.cls}`}>
-                      {updateBadge.text}
-                    </span>
-                  ) : null}
+                  {/* Só o que pede atenção: nova versão ou erro ao verificar. */}
+                  {t.key === 'updates' && updateBadge && (
+                    <span className={`flex-shrink-0 rounded px-1.5 py-0.5 font-body-sm text-body-sm ${updateBadge.cls}`}>{updateBadge.text}</span>
+                  )}
                 </button>
               );
             })}
-            <div className="mt-auto pt-space-md">
-              <div className="rounded-lg bg-surface-container-low p-space-sm shadow-inner">
-                <div className="mb-2 flex items-center justify-between">
-                  <span className="font-label-sm text-label-sm uppercase text-outline">CONSUMO DO ORBI</span>
-                  <span className="font-code-sm text-code-sm text-primary">{diagnostics ? `${diagnostics.processCount} PROC` : '—'}</span>
-                </div>
-                <div className="space-y-1.5 font-code-sm text-code-sm text-on-surface-variant">
-                  <div className="flex items-center justify-between">
-                    <span className="text-outline">RAM:</span>
-                    <span className="font-semibold text-on-surface">
-                      {diagnostics ? `${formatBytes(diagnostics.memoryBytes)} / ${formatBytes(diagnostics.systemMemoryBytes)}` : '—'}
-                    </span>
-                  </div>
-                  <div className="h-1.5 w-full overflow-hidden rounded-full bg-surface-container-lowest">
-                    <div className="h-full rounded-full bg-primary transition-all duration-300" style={{ width: `${Math.min(100, ramPct)}%` }} />
-                  </div>
-                  <div className="flex items-center justify-between pt-1">
-                    <span className="text-outline">CPU:</span>
-                    <span className="font-semibold text-secondary-fixed-dim">{diagnostics ? `${diagnostics.cpuPercent}%` : '—'}</span>
-                  </div>
-                </div>
-              </div>
-            </div>
+            <p className="mt-auto flex items-center gap-1 px-space-md pb-space-xs pt-space-md font-body-sm text-body-sm text-outline">
+              <Icon name="check" className="text-[14px]" />
+              Alterações salvas automaticamente
+            </p>
           </nav>
 
           <section className="flex min-w-0 flex-col gap-space-md rounded-lg bg-surface-container p-space-md lg:col-span-9">
@@ -159,24 +101,16 @@ export function SettingsPage() {
 }
 
 /** Cabeçalho de seção usado no topo de cada aba (padrão da tela Preferências). */
-export function TabHeader({ icon, title, description, badge }: { icon: string; title: string; description: string; badge?: string }) {
+export function TabHeader({ icon, title, description }: { icon: string; title: string; description: string }) {
   return (
-    <div className="flex items-center justify-between gap-space-md rounded-lg bg-surface-container-high/40 p-space-sm">
-      <div className="flex items-center gap-space-sm">
-        <div className="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-lg bg-primary-container/20 text-primary shadow-[0_0_8px_rgba(0,220,130,0.3)]">
-          <Icon name={icon} className="text-[20px]" />
-        </div>
-        <div>
-          <h2 className="font-headline-sm text-headline-sm font-semibold text-on-surface">{title}</h2>
-          <p className="font-body-sm text-body-sm text-on-surface-variant">{description}</p>
-        </div>
+    <div className="flex items-center gap-space-sm px-space-xs pb-space-xs">
+      <div className="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-lg bg-primary-container/15 text-primary">
+        <Icon name={icon} className="text-[20px]" />
       </div>
-      {badge && (
-        <div className="hidden flex-shrink-0 items-center gap-space-xs rounded bg-surface-container-lowest px-space-sm py-1 font-label-sm text-label-sm text-outline sm:flex">
-          <Icon name="bolt" className="text-[14px]" />
-          <span>{badge}</span>
-        </div>
-      )}
+      <div>
+        <h2 className="font-headline-sm text-headline-sm font-semibold text-on-surface">{title}</h2>
+        <p className="font-body-sm text-body-sm text-on-surface-variant">{description}</p>
+      </div>
     </div>
   );
 }

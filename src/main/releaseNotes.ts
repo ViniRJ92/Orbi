@@ -478,6 +478,15 @@ RELEASE_NOTES['1.0.0'] = [
   '• Contas, sessões, agrupamentos, Analytics, Agenda e configurações continuam exatamente como estavam. Nenhuma conta precisa ler o QR Code de novo.',
 ].join('\n');
 
+RELEASE_NOTES['1.0.1'] = [
+  'Visual mais limpo',
+  '',
+  '• A barra de contas mostra só o nome e a bolinha de status; a segunda linha aparece quando algo pede atenção (QR Code, suspensa, erro).',
+  '• O número de não lidas só aparece quando há mensagens.',
+  '• Menos etiquetas e textos técnicos nas telas, e rótulos em fonte normal em vez de letras maiúsculas.',
+  '• Nenhuma função mudou.',
+].join('\n');
+
 export interface WhatsNewResult {
   /** Versão atual do app (`app.getVersion()`), sempre presente. */
   version: string;

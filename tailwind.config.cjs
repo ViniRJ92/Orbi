@@ -42,7 +42,8 @@ module.exports = {
         'space-xl': '1.75rem',
       },
       fontFamily: {
-        'label-sm': ['JetBrains Mono', 'Consolas', 'monospace'],
+        // Rótulos em fonte normal; a monoespaçada fica para números e métricas.
+        'label-sm': ['Inter', 'Segoe UI', 'sans-serif'],
         'metric-xl': ['JetBrains Mono', 'Consolas', 'monospace'],
         'title-md': ['Inter', 'Segoe UI', 'sans-serif'],
         'headline-sm': ['Inter', 'Segoe UI', 'sans-serif'],
@@ -57,7 +58,7 @@ module.exports = {
         'body-md': ['Inter', 'Segoe UI', 'sans-serif'],
       },
       fontSize: {
-        'label-sm': ['11px', { lineHeight: '14px', letterSpacing: '0.05em', fontWeight: '600' }],
+        'label-sm': ['12px', { lineHeight: '16px', fontWeight: '500' }],
         'metric-xl': ['28px', { lineHeight: '32px', letterSpacing: '-0.03em', fontWeight: '700' }],
         'title-md': ['14px', { lineHeight: '20px', fontWeight: '600' }],
         'headline-sm': ['16px', { lineHeight: '24px', fontWeight: '600' }],

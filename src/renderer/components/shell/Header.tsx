@@ -43,34 +43,24 @@ export function Header() {
             onClick={goHome}
             title="Voltar para a instância aberta"
           >
-            <span className="inline-block h-2.5 w-2.5 rounded-full bg-surface-bright/40" />
             <div className="flex h-7 w-7 items-center justify-center overflow-hidden rounded-lg bg-surface-container">
               <OrbiLogo size={22} />
             </div>
             <span className="select-none bg-gradient-to-r from-primary via-tertiary to-on-surface bg-clip-text font-headline-sm text-headline-sm font-bold tracking-tight text-transparent">
               ORBI
             </span>
-            <span className="rounded bg-surface-container-high px-space-xs py-0.5 font-label-sm text-label-sm uppercase text-on-surface-variant">
-              NOC
-            </span>
           </button>
-          <div
-            className="hidden flex-shrink-0 items-center gap-space-xs whitespace-nowrap rounded bg-surface-container-low px-space-sm py-1 xl:flex"
-            title="Instâncias conectadas agora / total de instâncias"
-          >
-            <span
-              className={
-                'h-2 w-2 rounded-full ' +
-                (online > 0 ? 'bg-primary shadow-[0_0_6px_rgba(0,220,130,0.5)]' : 'bg-outline')
-              }
-            />
-            <span className={'font-label-sm text-label-sm uppercase ' + (online > 0 ? 'text-primary' : 'text-outline')}>
-              INSTÂNCIAS ATIVAS
-            </span>
-            <span className="font-code-sm text-code-sm text-on-surface-variant">
-              | {online}/{accounts.length}
-            </span>
-          </div>
+          {accounts.length > 0 && (
+            <div
+              className="hidden flex-shrink-0 items-center gap-1.5 whitespace-nowrap font-body-sm text-body-sm text-on-surface-variant xl:flex"
+              title="Instâncias conectadas agora / total de instâncias"
+            >
+              <span className={'h-1.5 w-1.5 rounded-full ' + (online > 0 ? 'bg-primary' : 'bg-outline')} />
+              <span>
+                {online}/{accounts.length} online
+              </span>
+            </div>
+          )}
         </div>
 
         <nav className="app-no-drag hidden items-center gap-space-xs md:flex">
@@ -108,7 +98,7 @@ export function Header() {
           >
             <Icon name="search" className="text-[18px] text-outline" />
             <span className="flex-1 truncate font-body-sm text-body-sm text-outline">Buscar instância ou número...</span>
-            <span className="font-badge-micro text-badge-micro text-outline-variant">CTRL+K</span>
+            <span className="font-badge-micro text-badge-micro text-outline-variant">Ctrl+K</span>
           </button>
           <div className="app-no-drag flex items-center gap-space-xs">
             <button

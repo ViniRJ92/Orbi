@@ -120,9 +120,9 @@ export function CommandPalette() {
                             {acc.name}
                           </span>
                         </div>
-                        <div className="truncate font-code-sm text-code-sm text-outline">{accountStatusLabel(acc, status)}</div>
+                        <div className="truncate font-body-sm text-body-sm text-outline">{accountStatusLabel(acc, status)}</div>
                       </div>
-                      <span className={`font-badge-micro text-badge-micro ${t.text}`}>{t.tag}</span>
+                      <span className={`h-2 w-2 flex-shrink-0 rounded-full ${t.dot}`} />
                       {isActive && <Icon name="keyboard_return" className="text-[16px] text-outline" />}
                     </button>
                   );

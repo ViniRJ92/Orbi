@@ -113,28 +113,19 @@ export function InstancesTab({ diagnostics }: { diagnostics: DiagnosticsInfo | n
 
   return (
     <>
-      <div className="flex flex-wrap items-center justify-between gap-space-sm rounded-lg bg-surface-container-lowest px-gutter py-space-sm shadow-sm">
-        <div className="flex items-center gap-space-md">
-          <div className="flex items-center gap-space-xs">
-            <Icon name="hub" className="text-[18px] text-primary" />
-            <span className="font-headline-sm text-headline-sm text-on-surface">Instâncias &amp; Agrupamentos</span>
+      <div className="flex flex-wrap items-center justify-between gap-space-sm px-space-xs pb-space-xs">
+        <div className="flex items-center gap-space-sm">
+          <div className="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-lg bg-primary-container/15 text-primary">
+            <Icon name="hub" className="text-[20px]" />
           </div>
-          <span className="hidden font-label-sm text-label-sm uppercase tracking-wider text-on-surface-variant xl:inline">
-            SESSÕES ISOLADAS POR INSTÂNCIA
-          </span>
-        </div>
-        <div className="flex items-center gap-space-md">
-          <div className="flex items-center gap-space-xs rounded bg-surface-container px-space-sm py-1">
-            <Icon name="memory" className="text-[14px] text-secondary" />
-            <span className="font-code-sm text-code-sm text-secondary">RAM {diagnostics ? formatBytes(diagnostics.memoryBytes) : '—'}</span>
-          </div>
-          <div className="flex items-center gap-space-xs rounded bg-surface-container px-space-sm py-1">
-            <Icon name="router" className="text-[14px] text-primary" />
-            <span className="font-code-sm text-code-sm text-primary">
-              EM MEMÓRIA ({loaded}/{accounts.length})
-            </span>
+          <div>
+            <h2 className="font-headline-sm text-headline-sm font-semibold text-on-surface">Instâncias &amp; Agrupamentos</h2>
+            <p className="font-body-sm text-body-sm text-on-surface-variant">Cada instância roda em uma sessão isolada.</p>
           </div>
         </div>
+        <span className="font-body-sm text-body-sm text-outline">
+          {loaded}/{accounts.length} em memória · {diagnostics ? formatBytes(diagnostics.memoryBytes) : '—'}
+        </span>
       </div>
 
       {/* Agrupamentos */}
@@ -144,7 +135,9 @@ export function InstancesTab({ diagnostics }: { diagnostics: DiagnosticsInfo | n
             <Icon name="category" className="text-[18px] text-secondary" />
             <h2 className="font-headline-sm text-headline-sm text-on-surface">Agrupamentos</h2>
           </div>
-          <span className="font-code-sm text-code-sm text-on-surface-variant">{groups.length} GRUPO(S)</span>
+          <span className="font-body-sm text-body-sm text-outline">
+            {groups.length} {groups.length === 1 ? 'grupo' : 'grupos'}
+          </span>
         </div>
         <p className="font-body-sm text-body-sm text-on-surface-variant">
           Pastas para organizar as instâncias na barra de contas e filtrar o Analytics. A bolinha define a cor de cada uma.
@@ -175,7 +168,7 @@ export function InstancesTab({ diagnostics }: { diagnostics: DiagnosticsInfo | n
               >
                 <ColorSwatchButton value={g.color} onChange={(hex) => setGroupColor(g.id, hex)} title={`Cor do agrupamento ${g.name}`} size={10} />
                 <span className="font-title-md text-body-sm font-medium text-on-surface">{g.name}</span>
-                <span className="rounded bg-primary-container/20 px-1.5 py-0.5 font-badge-micro text-badge-micro font-bold text-primary">{count}</span>
+                <span className="font-body-sm text-body-sm text-outline">{count}</span>
                 <div className="ml-1 flex items-center gap-0.5">
                   <button
                     type="button"
@@ -243,8 +236,8 @@ export function InstancesTab({ diagnostics }: { diagnostics: DiagnosticsInfo | n
           <div className="flex items-center gap-space-sm">
             <Icon name="dns" className="text-[18px] text-primary" />
             <h2 className="font-headline-sm text-headline-sm text-on-surface">Instâncias</h2>
-            <span className="rounded bg-surface-container-high px-space-xs py-0.5 font-label-sm text-label-sm font-bold text-primary">
-              {query.trim() ? `${visiveis.length} de ${accounts.length}` : `${accounts.length} instância(s)`}
+            <span className="font-body-sm text-body-sm text-outline">
+              {query.trim() ? `${visiveis.length} de ${accounts.length}` : accounts.length}
             </span>
           </div>
           <div className="flex w-full items-center rounded bg-surface-container px-space-sm py-1.5 transition-all focus-within:bg-surface-container-high sm:w-80">
@@ -267,7 +260,7 @@ export function InstancesTab({ diagnostics }: { diagnostics: DiagnosticsInfo | n
           <div className="mt-space-xs w-full overflow-x-auto rounded-lg bg-surface-container-lowest shadow-inner">
             <table className="w-full border-collapse text-left">
               <thead>
-                <tr className="bg-surface-container-low font-label-sm text-label-sm uppercase text-on-surface-variant">
+                <tr className="bg-surface-container-low font-body-sm text-body-sm text-outline [&>th]:font-medium">
                   <th className="w-10 px-space-sm py-2.5 text-center">
                     <input
                       type="checkbox"
@@ -277,11 +270,11 @@ export function InstancesTab({ diagnostics }: { diagnostics: DiagnosticsInfo | n
                       aria-label="Selecionar todas"
                     />
                   </th>
-                  <th className="px-space-sm py-2.5">NOME</th>
-                  <th className="px-space-sm py-2.5">AGRUPAMENTO</th>
-                  <th className="hidden px-space-sm py-2.5 2xl:table-cell">SERVIÇO</th>
-                  <th className="px-space-sm py-2.5">STATUS</th>
-                  <th className="px-space-sm py-2.5 text-right">AÇÕES</th>
+                  <th className="px-space-sm py-2.5">Nome</th>
+                  <th className="px-space-sm py-2.5">Agrupamento</th>
+                  <th className="hidden px-space-sm py-2.5 2xl:table-cell">Serviço</th>
+                  <th className="px-space-sm py-2.5">Status</th>
+                  <th className="px-space-sm py-2.5 text-right">Ações</th>
                 </tr>
               </thead>
               <tbody className="font-body-sm text-body-sm text-on-surface">
@@ -309,8 +302,8 @@ export function InstancesTab({ diagnostics }: { diagnostics: DiagnosticsInfo | n
 
         <div className="flex flex-col items-center justify-between gap-space-sm pt-space-xs sm:flex-row">
           <div className="flex flex-wrap items-center gap-space-xs">
-            <span className="rounded border border-outline-variant/30 bg-surface-container px-2.5 py-1 font-badge-micro text-badge-micro font-bold uppercase text-on-surface-variant">
-              LOTE SELECIONADO: {selectedIds.size}
+            <span className="font-body-sm text-body-sm text-outline">
+              {selectedIds.size === 0 ? 'Nenhuma selecionada' : `${selectedIds.size} selecionada(s)`}
             </span>
             {selectedIds.size > 0 && (
               <>
@@ -465,7 +458,7 @@ function InstanceRow({
             onKeyDown={(e) => {
               if (e.key === 'Enter') (e.target as HTMLInputElement).blur();
             }}
-            className="min-w-[110px] flex-1 rounded bg-transparent px-1 py-0.5 font-metric-md text-code-sm font-semibold text-on-surface outline-none transition-colors hover:bg-surface-container-high focus:bg-surface-container-high focus:shadow-[0_0_0_1px_#00dc82]"
+            className="min-w-[110px] flex-1 rounded bg-transparent px-1 py-0.5 font-title-md text-title-md font-semibold text-on-surface outline-none transition-colors hover:bg-surface-container-high focus:bg-surface-container-high focus:shadow-[0_0_0_1px_#00dc82]"
             aria-label="Nome da instância"
             title="Clique para renomear"
           />
@@ -476,7 +469,7 @@ function InstanceRow({
           <select
             value={account.groupId && groups.some((g) => g.id === account.groupId) ? account.groupId : ''}
             onChange={(e) => setAccountGroup(account.id, e.target.value || null)}
-            className="w-full cursor-pointer appearance-none rounded border border-outline-variant/30 bg-surface-container-high/80 py-1 pl-2.5 pr-7 font-code-sm text-code-sm text-on-surface transition-colors hover:bg-surface-container-highest focus:outline-none"
+            className="w-full cursor-pointer appearance-none rounded border border-outline-variant/30 bg-surface-container-high/80 py-1 pl-2.5 pr-7 font-body-sm text-body-sm text-on-surface transition-colors hover:bg-surface-container-highest focus:outline-none"
             aria-label="Agrupamento da instância"
           >
             <option value="">Sem agrupamento</option>
@@ -493,9 +486,12 @@ function InstanceRow({
         <span className="whitespace-nowrap font-code-sm text-code-sm text-on-surface-variant">{SERVICES[account.service]?.label ?? account.service}</span>
       </td>
       <td className="px-space-sm py-2.5">
-        <span className={`inline-flex items-center gap-1.5 whitespace-nowrap rounded px-2 py-0.5 font-badge-micro text-badge-micro font-bold ${t.chip}`}>
-          <span className={`h-1.5 w-1.5 rounded-full ${t.dot} ${tone === 'live' ? 'animate-pulse' : ''}`} />
-          {toneBadgeLabel(account, tone)}
+        <span className={`inline-flex items-center gap-1.5 whitespace-nowrap rounded px-2 py-0.5 font-body-sm text-body-sm ${t.chip}`}>
+          <span className={`h-1.5 w-1.5 rounded-full ${t.dot}`} />
+          {(() => {
+            const s = toneBadgeLabel(account, tone).toLowerCase();
+            return s.charAt(0).toUpperCase() + s.slice(1).replace('qr', 'QR');
+          })()}
         </span>
       </td>
       <td className="px-space-sm py-2.5 text-right">

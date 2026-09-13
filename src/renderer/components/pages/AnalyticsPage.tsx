@@ -256,7 +256,7 @@ export function AnalyticsPage() {
               </div>
             )}
             <label className="relative flex cursor-pointer items-center gap-space-xs rounded-lg bg-surface-container-lowest px-space-md py-1.5 transition-colors hover:bg-surface-container">
-              <span className="font-label-sm text-label-sm uppercase text-outline">AGRUPAMENTO:</span>
+              <span className="font-body-sm text-body-sm text-outline">Agrupamento</span>
               <select
                 value={groupFilter ?? ''}
                 onChange={(e) => setGroupFilter(e.target.value || null)}
@@ -284,15 +284,11 @@ export function AnalyticsPage() {
             </label>
           </div>
           <div className="flex items-center gap-space-sm self-end lg:self-auto">
-            <div className="flex items-center gap-space-xs rounded-lg bg-surface-container-lowest px-space-sm py-1" title="O painel se atualiza sozinho">
-              <span className={'h-2 w-2 rounded-full bg-primary ' + (loading ? 'animate-ping' : 'animate-pulse')} />
-              <span className="font-code-sm text-code-sm text-on-surface-variant">ATUALIZA A CADA 20S</span>
-            </div>
             <button
               type="button"
               onClick={exportCsv}
               disabled={exporting}
-              className="flex items-center gap-space-xs rounded-lg bg-surface-container-high px-space-md py-1.5 font-title-md text-title-md text-on-surface shadow-sm transition-colors hover:bg-surface-bright disabled:opacity-50"
+              className="flex items-center gap-space-xs whitespace-nowrap rounded-lg bg-surface-container-high px-space-md py-1.5 font-title-md text-title-md text-on-surface shadow-sm transition-colors hover:bg-surface-bright disabled:opacity-50"
               title="Salvar o período selecionado em CSV"
             >
               <Icon name="download" className="text-[16px] text-primary" />
@@ -337,12 +333,12 @@ export function AnalyticsPage() {
         <div className="grid grid-cols-1 gap-gutter sm:grid-cols-2 xl:grid-cols-4">
           <div className="group relative flex flex-col justify-between overflow-hidden rounded-xl bg-surface-container-low p-space-md shadow-sm transition-all hover:bg-surface-container">
             <div className="flex items-center justify-between">
-              <span className="font-label-sm text-label-sm uppercase tracking-wider text-outline">SESSÕES ATIVAS</span>
+              <span className="font-body-sm text-body-sm font-medium text-on-surface-variant">Sessões ativas</span>
               <Icon name="sensors" className="text-[20px] text-primary" />
             </div>
             <div className="my-space-sm flex items-baseline gap-space-xs">
               <span className="font-metric-xl text-metric-xl font-bold text-primary">{health.online}</span>
-              <span className="font-label-sm text-label-sm text-on-surface-variant">ONLINE</span>
+              <span className="font-label-sm text-label-sm text-on-surface-variant">online</span>
             </div>
             <div className="flex items-center gap-space-md pt-space-xs font-label-sm text-label-sm">
               <div className="flex items-center gap-1.5">
@@ -359,7 +355,7 @@ export function AnalyticsPage() {
 
           <div className="group relative flex flex-col justify-between overflow-hidden rounded-xl bg-surface-container-low p-space-md shadow-sm transition-all hover:bg-surface-container">
             <div className="flex items-center justify-between">
-              <span className="font-label-sm text-label-sm uppercase tracking-wider text-outline">VOLUME TOTAL</span>
+              <span className="font-body-sm text-body-sm font-medium text-on-surface-variant">Volume total</span>
               <Icon name="swap_vert" className="text-[20px] text-secondary-container" />
             </div>
             <div className="my-space-sm flex items-baseline gap-space-xs">
@@ -387,7 +383,7 @@ export function AnalyticsPage() {
 
           <div className="group relative flex flex-col justify-between overflow-hidden rounded-xl bg-surface-container-low p-space-md shadow-sm transition-all hover:bg-surface-container">
             <div className="flex items-center justify-between">
-              <span className="font-label-sm text-label-sm uppercase tracking-wider text-outline">INSTÂNCIA LÍDER</span>
+              <span className="font-body-sm text-body-sm font-medium text-on-surface-variant">Instância líder</span>
               <Icon name="military_tech" className="text-[20px] text-tertiary" />
             </div>
             <div className="my-space-sm flex flex-col">
@@ -403,23 +399,23 @@ export function AnalyticsPage() {
                 <span className="font-label-sm text-label-sm font-normal text-on-surface-variant">mensagens</span>
               </span>
             </div>
-            <div className="flex items-center justify-between pt-space-xs font-code-sm text-code-sm text-on-surface-variant">
-              <span>Share: {leaderShare}%</span>
-              <span className="font-bold text-primary">{byAccount.length} com atividade</span>
+            <div className="flex items-center justify-between pt-space-xs font-body-sm text-body-sm text-on-surface-variant">
+              <span>{leaderShare}% do volume</span>
+              <span>{byAccount.length} com atividade</span>
             </div>
             <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-tertiary/40" />
           </div>
 
           <div className="group relative flex flex-col justify-between overflow-hidden rounded-xl bg-surface-container-low p-space-md shadow-sm transition-all hover:bg-surface-container">
             <div className="flex items-center justify-between">
-              <span className="font-label-sm text-label-sm uppercase tracking-wider text-outline">MÉDIA POR CONTA</span>
+              <span className="font-body-sm text-body-sm font-medium text-on-surface-variant">Média por conta</span>
               <Icon name="speed" className="text-[20px] text-secondary" />
             </div>
             <div className="my-space-sm flex items-baseline gap-space-xs">
               <span className="font-metric-xl text-metric-xl font-bold text-on-surface">{summary ? summary.averagePerAccount.toFixed(1) : '0'}</span>
               <span className="font-label-sm text-label-sm text-outline">msg / conta</span>
             </div>
-            <div className="flex items-center justify-between pt-space-xs font-code-sm text-code-sm text-on-surface-variant">
+            <div className="flex items-center justify-between pt-space-xs font-body-sm text-body-sm text-on-surface-variant">
               <span>Entre as contas com atividade</span>
             </div>
             <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-secondary/40" />
@@ -453,7 +449,7 @@ export function AnalyticsPage() {
               ) : (
                 byAccount.map((a, i) => (
                   <div key={a.accountId} className="flex items-center gap-space-sm" title={`${a.name}: ${a.received} recebidas, ${a.sent} enviadas`}>
-                    <span className="w-28 truncate font-code-sm text-code-sm text-on-surface">{a.name}</span>
+                    <span className="w-28 truncate font-body-sm text-body-sm text-on-surface">{a.name}</span>
                     <div className="flex h-3 flex-1 overflow-hidden rounded-full bg-surface-container-lowest">
                       <div className="flex h-full" style={{ width: `${(a.total / maxTotal) * 100}%` }}>
                         <div className="h-full bg-primary-container" style={{ width: `${(a.received / Math.max(1, a.total)) * 100}%` }} />
@@ -467,9 +463,8 @@ export function AnalyticsPage() {
                 ))
               )}
             </div>
-            <div className="flex items-center justify-between border-t border-surface-container-high/50 pt-space-xs font-label-sm text-label-sm text-outline">
-              <span>ESCALA NORMALIZADA (MSG)</span>
-              <span>ATUALIZADO {formatAgo(updatedAt, now).toUpperCase()}</span>
+            <div className="flex items-center justify-end border-t border-surface-container-high/50 pt-space-xs font-body-sm text-body-sm text-outline">
+              <span title="O painel se atualiza sozinho a cada 20 segundos">Atualizado {formatAgo(updatedAt, now)}</span>
             </div>
           </div>
 
@@ -571,7 +566,7 @@ export function AnalyticsPage() {
         </div>
 
         {/* Rodapé */}
-        <div className="flex flex-col items-center justify-between gap-space-xs rounded-xl bg-surface-container-low px-space-md py-space-sm font-code-sm text-code-sm text-on-surface-variant sm:flex-row">
+        <div className="flex flex-col items-center justify-between gap-space-xs rounded-xl bg-surface-container-low px-space-md py-space-sm font-body-sm text-body-sm text-on-surface-variant sm:flex-row">
           <div className="flex items-center gap-space-md">
             <div className="flex items-center gap-1.5">
               <span className="h-2 w-2 rounded-full bg-primary shadow-[0_0_6px_rgba(0,220,130,0.8)]" />
@@ -617,7 +612,7 @@ function DayTable({ title, report, highlight = false }: { title: string; report:
       <div className="overflow-x-auto">
         <table className="w-full border-collapse text-left">
           <thead>
-            <tr className="h-8 bg-surface-container-lowest font-label-sm text-label-sm uppercase tracking-wider text-outline">
+            <tr className="h-8 bg-surface-container-lowest font-body-sm text-body-sm text-outline">
               <th className="px-space-md font-semibold">INSTÂNCIA</th>
               <th className="px-space-sm text-right font-semibold">INTERAÇÕES</th>
               <th className="px-space-sm text-right font-semibold">RECEBIDAS</th>
@@ -658,7 +653,7 @@ function DayTable({ title, report, highlight = false }: { title: string; report:
           {rows.length > 0 && (
             <tfoot>
               <tr className="h-9 border-t-2 border-surface-container-high bg-surface-container-lowest font-code-sm text-code-sm">
-                <td className="px-space-md font-label-sm text-label-sm uppercase tracking-wider text-on-surface-variant">Total</td>
+                <td className="px-space-md font-body-sm text-body-sm font-semibold text-on-surface-variant">Total</td>
                 <td className="px-space-sm text-right font-bold text-on-surface">{report?.totalConversations ?? 0}</td>
                 <td className="px-space-sm text-right font-bold text-on-surface">{report?.totalReceived ?? 0}</td>
                 <td className="px-space-sm text-right font-bold text-on-surface">{report?.totalSent ?? 0}</td>

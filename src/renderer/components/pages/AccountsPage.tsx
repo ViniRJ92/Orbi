@@ -14,8 +14,7 @@ import { useEffect, useMemo, useState } from 'react';
 import { AccountRecord, SERVICES } from '../../types';
 import { useAppStore } from '../../store/useAppStore';
 import { FILTERS, FilterKey, useFilterCounts, useFilteredAccounts } from '../../useFilteredAccounts';
-import { accountStatusLabel } from '../../accountStatusLabel';
-import { accountTone, partitionShort, sessionStateLabel, TONE_STYLES, toneBadgeLabel } from '../../accountTone';
+import { AccountTone, accountTone, TONE_STYLES, toneBadgeLabel } from '../../accountTone';
 import { formatAgo } from '../../format';
 import { usePageEscape } from '../../usePageEscape';
 import { AccountAvatar } from '../ui/AccountAvatar';
@@ -37,6 +36,12 @@ const FILTER_DOT: Record<FilterKey, string | null> = {
   suspended: 'bg-outline',
   error: 'bg-error',
 };
+
+/** "CONECTADO" -> "Conectado": mesmo texto do selo, em caixa de frase. */
+function statusChipLabel(acc: AccountRecord, tone: AccountTone): string {
+  const s = toneBadgeLabel(acc, tone).toLowerCase();
+  return s.charAt(0).toUpperCase() + s.slice(1).replace('qr', 'QR');
+}
 
 export function AccountsPage() {
   const accounts = useAppStore((s) => s.accounts);
@@ -205,7 +210,7 @@ export function AccountsPage() {
               })}
             </div>
           </div>
-          <div className="relative flex items-center gap-space-xs">
+          <div className="relative flex items-center gap-space-xs whitespace-nowrap">
             <button
               type="button"
               onClick={toggleSelectAll}
@@ -227,10 +232,10 @@ export function AccountsPage() {
             <button
               type="button"
               onClick={() => setAddAccountOpen(true)}
-              className="flex items-center gap-1.5 rounded-lg bg-primary px-space-lg py-2 font-headline-sm text-headline-sm font-semibold text-on-primary shadow-[0_0_16px_rgba(0,220,130,0.35)] transition-all hover:bg-primary-fixed"
+              className="flex items-center gap-1.5 rounded-lg bg-primary px-space-md py-2 font-title-md text-title-md font-semibold text-on-primary transition-all hover:bg-primary-fixed"
             >
-              <Icon name="add_circle" className="text-[20px]" />
-              <span>Nova Instância</span>
+              <Icon name="add_circle" className="text-[18px]" />
+              <span>Nova instância</span>
             </button>
           </div>
         </div>
@@ -255,9 +260,9 @@ export function AccountsPage() {
           <div className="flex flex-wrap items-center gap-space-xs overflow-x-auto">
             {groups.length > 0 && (
               <>
-                <div className="flex items-center gap-1 px-2 font-label-sm text-label-sm uppercase text-on-surface-variant">
+                <div className="flex items-center gap-1 px-2 font-body-sm text-body-sm text-on-surface-variant">
                   <Icon name="filter_alt" className="text-[16px]" />
-                  <span>Grupo:</span>
+                  <span>Grupo</span>
                 </div>
                 <div className="flex flex-wrap items-center gap-1 rounded-lg bg-surface-container p-1">
                   {[{ id: 'all', name: 'Todos', color: undefined as string | undefined }, ...groups, { id: '__none__', name: 'Sem grupo', color: undefined }].map(
@@ -283,7 +288,7 @@ export function AccountsPage() {
               </>
             )}
             <div className="flex items-center gap-1 rounded-lg bg-surface-container px-2 py-1">
-              <span className="font-label-sm text-label-sm uppercase text-outline">Ordem:</span>
+              <span className="font-body-sm text-body-sm text-outline">Ordem</span>
               <select
                 className="cursor-pointer bg-transparent font-body-sm text-body-sm text-on-surface outline-none"
                 value={sortKey}
@@ -390,7 +395,7 @@ export function AccountsPage() {
               </span>
             </div>
             <div className="hidden h-4 w-px bg-surface-container-high sm:block" />
-            <div className="flex flex-wrap items-center gap-4 font-code-sm text-code-sm text-on-surface-variant">
+            <div className="flex flex-wrap items-center gap-4 font-body-sm text-body-sm text-on-surface-variant">
               <span>
                 Em memória: <strong className="text-primary">{loadedCount}</strong>
               </span>
@@ -406,7 +411,7 @@ export function AccountsPage() {
             </div>
           </div>
           <div className="flex items-center gap-space-xs">
-            <span className="font-label-sm text-label-sm uppercase text-outline">Atualizado {formatAgo(updatedAt, now)}</span>
+            <span className="font-body-sm text-body-sm text-outline">Atualizado {formatAgo(updatedAt, now)}</span>
             <button
               type="button"
               onClick={() => {
@@ -477,7 +482,6 @@ function InstanceCard({
         (draggable ? 'cursor-grab active:cursor-grabbing' : '')
       }
     >
-      <div className={`absolute bottom-0 left-0 top-0 w-1 ${t.bar}`} />
       <div>
         <div className="mb-3 flex items-start justify-between gap-space-xs">
           <div className="flex min-w-0 items-center gap-space-xs">
@@ -493,7 +497,15 @@ function InstanceCard({
               <h2 className={`truncate font-headline-sm text-headline-sm font-bold text-on-surface transition-colors ${t.hoverText}`}>
                 {account.name}
               </h2>
-              <span className="block truncate font-code-sm text-code-sm text-outline">{accountStatusLabel(account, status)}</span>
+              <span className="block truncate font-body-sm text-body-sm text-outline">
+                {[
+                  SERVICES[account.service]?.label,
+                  account.phone,
+                  isWhatsapp && (status?.unreadCount ?? 0) > 0 ? `${status?.unreadCount} não lidas` : null,
+                ]
+                  .filter(Boolean)
+                  .join(' · ')}
+              </span>
             </div>
           </div>
           <div className="flex flex-shrink-0 items-center gap-1">
@@ -508,47 +520,19 @@ function InstanceCard({
             >
               <Icon name="star" fill={account.favorite} className="text-[18px]" />
             </button>
-            <span className={`flex items-center gap-1 rounded-full px-2 py-0.5 font-badge-micro text-badge-micro font-bold ${t.chip}`}>
-              <span className={`h-1.5 w-1.5 rounded-full ${tone === 'live' ? 'bg-primary' : t.dot} ${tone === 'sync' ? 'animate-pulse' : ''}`} />
-              {toneBadgeLabel(account, tone)}
+            <span className={`flex items-center gap-1.5 whitespace-nowrap rounded-full px-2 py-0.5 font-body-sm text-body-sm ${t.chip}`}>
+              <span className={`h-1.5 w-1.5 rounded-full ${tone === 'live' ? 'bg-primary' : t.dot}`} />
+              {statusChipLabel(account, tone)}
             </span>
           </div>
         </div>
 
-        <div className="mb-space-md grid grid-cols-3 gap-2 rounded-lg bg-surface-container-lowest p-space-xs text-center">
-          <div className="flex flex-col">
-            <span className="font-badge-micro text-badge-micro uppercase text-outline">Não lidas</span>
-            <span
-              className={
-                'font-metric-md text-metric-md font-semibold ' +
-                ((status?.unreadCount ?? 0) > 0 ? 'text-primary-container' : 'text-on-surface')
-              }
-            >
-              {isWhatsapp ? status?.unreadCount ?? 0 : '—'}
-            </span>
+        {groupName && (
+          <div className="mb-3 flex items-center gap-1 font-body-sm text-body-sm text-on-surface-variant">
+            <Icon name="folder" className="text-[14px] text-outline" />
+            <span className="truncate">{groupName}</span>
           </div>
-          <div className="flex min-w-0 flex-col">
-            <span className="font-badge-micro text-badge-micro uppercase text-outline">Serviço</span>
-            <span className={`truncate font-code-sm text-code-sm font-bold ${t.text}`}>{SERVICES[account.service]?.label}</span>
-          </div>
-          <div className="flex flex-col">
-            <span className="font-badge-micro text-badge-micro uppercase text-outline">Sessão</span>
-            <span className="font-code-sm text-code-sm font-medium text-on-surface-variant">{sessionStateLabel(status)}</span>
-          </div>
-        </div>
-
-        <div className="mb-3 flex items-center justify-between gap-space-xs font-body-sm text-body-sm text-on-surface-variant">
-          <span className="truncate rounded bg-surface-container-high px-2 py-0.5 font-label-sm text-label-sm uppercase text-on-surface-variant">
-            {groupName ?? 'Sem agrupamento'}
-          </span>
-          {tone === 'error' ? (
-            <span className="font-code-sm text-code-sm text-error">Falha ao carregar</span>
-          ) : (
-            <span className="truncate font-code-sm text-code-sm text-outline" title="Sessão isolada desta instância">
-              Sessão: {partitionShort(account.id)}
-            </span>
-          )}
-        </div>
+        )}
       </div>
 
       <div className="-mx-space-md -mb-space-md flex items-center justify-between gap-1 rounded-b-xl bg-surface-container-lowest/50 px-space-md py-2 pt-2">

@@ -73,16 +73,12 @@ export function GeneralTab() {
         icon="brush"
         title="Geral & Aparência"
         description="Inicialização, tema, posição da barra de contas e comportamento da janela."
-        badge="AUTOSAVE ATIVO"
       />
 
       <div className="rounded-lg bg-surface-container-low p-space-md shadow-sm">
         <div className="flex items-start justify-between gap-space-md">
           <div className="space-y-0.5">
-            <div className="flex items-center gap-space-xs">
-              <span className="font-title-md text-title-md font-semibold text-on-surface">Iniciar com o Windows</span>
-              <span className="rounded bg-surface-container-highest px-1.5 font-badge-micro text-badge-micro font-bold text-primary">RECOMENDADO</span>
-            </div>
+            <span className="font-title-md text-title-md font-semibold text-on-surface">Iniciar com o Windows</span>
             <p className="font-body-sm text-body-sm text-on-surface-variant">
               Abre o Orbi automaticamente quando o Windows inicia, para as contas continuarem conectadas na bandeja.
             </p>
@@ -95,16 +91,13 @@ export function GeneralTab() {
 
       <div className="space-y-space-sm rounded-lg bg-surface-container-low p-space-md shadow-sm">
         <div>
-          <h3 className="flex items-center gap-1.5 font-title-md text-title-md font-semibold text-on-surface">
-            <span>Tema visual</span>
-            <span className="font-label-sm text-label-sm font-normal text-primary">(aplicado na hora)</span>
-          </h3>
+          <h3 className="font-title-md text-title-md font-semibold text-on-surface">Tema visual</h3>
           <p className="font-body-sm text-body-sm text-on-surface-variant">Escolha o esquema de cores da interface do Orbi.</p>
         </div>
         <div className="grid grid-cols-1 gap-space-sm sm:grid-cols-3">
-          <ThemeCard value="dark" current={theme} onPick={setTheme} label="Escuro (NOC)" icon="dark_mode" tag="NOC DARK" />
-          <ThemeCard value="light" current={theme} onPick={setTheme} label="Claro" icon="light_mode" tag="DAYLIGHT" />
-          <ThemeCard value="system" current={theme} onPick={setTheme} label="Sistema (Auto)" icon="settings_brightness" tag="AUTO SYNC" />
+          <ThemeCard value="dark" current={theme} onPick={setTheme} label="Escuro" icon="dark_mode" />
+          <ThemeCard value="light" current={theme} onPick={setTheme} label="Claro" icon="light_mode" />
+          <ThemeCard value="system" current={theme} onPick={setTheme} label="Igual ao Windows" icon="settings_brightness" />
         </div>
       </div>
 
@@ -183,24 +176,20 @@ export function GeneralTab() {
       </div>
 
       <div className="rounded-lg bg-surface-container-low p-space-md shadow-sm">
-        <div className="mb-space-sm flex items-center justify-between">
-          <div className="flex items-center gap-space-xs">
-            <Icon name="keyboard" className="text-[18px] text-primary" />
-            <span className="font-title-md text-title-md font-semibold text-on-surface">Mapa de atalhos de teclado</span>
-          </div>
-          <span className="font-code-sm text-code-sm text-outline">PADRÃO DO ORBI</span>
+        <div className="mb-space-sm flex items-center gap-space-xs">
+          <Icon name="keyboard" className="text-[18px] text-on-surface-variant" />
+          <span className="font-title-md text-title-md font-semibold text-on-surface">Atalhos de teclado</span>
         </div>
         <div className="overflow-hidden rounded-lg bg-surface-container-lowest">
           <table className="w-full text-left">
             <thead className="bg-surface-container-high/60">
-              <tr className="font-label-sm text-label-sm uppercase text-outline">
-                <th className="px-space-md py-2">Ação</th>
-                <th className="px-space-md py-2">Combinação de teclas</th>
-                <th className="hidden px-space-md py-2 sm:table-cell">Onde funciona</th>
-                <th className="px-space-md py-2 text-right">Status</th>
+              <tr className="font-body-sm text-body-sm text-outline">
+                <th className="px-space-md py-2 font-medium">Ação</th>
+                <th className="px-space-md py-2 font-medium">Teclas</th>
+                <th className="hidden px-space-md py-2 font-medium sm:table-cell">Onde funciona</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-surface-container font-code-sm text-code-sm">
+            <tbody className="divide-y divide-surface-container font-body-sm text-body-sm">
               {SHORTCUTS.map((s) => (
                 <tr key={s.action} className="transition-colors hover:bg-surface-container-high/30">
                   <td className="px-space-md py-2.5 font-title-md text-title-md text-on-surface">{s.action}</td>
@@ -208,14 +197,11 @@ export function GeneralTab() {
                     {s.keys.map((k, i) => (
                       <span key={k}>
                         {i > 0 && <span className="mx-1 text-outline">+</span>}
-                        <kbd className="rounded bg-surface-container-high px-2 py-0.5 font-bold text-primary shadow-sm">{k}</kbd>
+                        <kbd className="rounded bg-surface-container-high px-2 py-0.5 font-code-sm text-code-sm text-on-surface">{k}</kbd>
                       </span>
                     ))}
                   </td>
                   <td className="hidden px-space-md py-2.5 text-on-surface-variant sm:table-cell">{s.context}</td>
-                  <td className="px-space-md py-2.5 text-right">
-                    <span className="rounded bg-primary/10 px-1.5 py-0.5 font-badge-micro text-badge-micro font-bold text-primary">ATIVO</span>
-                  </td>
                 </tr>
               ))}
             </tbody>
@@ -232,14 +218,12 @@ function ThemeCard({
   onPick,
   label,
   icon,
-  tag,
 }: {
   value: ThemePreference;
   current: ThemePreference;
   onPick: (t: ThemePreference) => void;
   label: string;
   icon: string;
-  tag: string;
 }) {
   const active = value === current;
   return (
@@ -259,7 +243,6 @@ function ThemeCard({
               <span className="h-2 w-2 rounded-full bg-[#6ffbbe]" />
               <span className="h-2 w-2 rounded-full bg-[#00dc82]" />
             </div>
-            <span className="font-badge-micro text-badge-micro text-[#45f99c]">{tag}</span>
           </div>
           <div className="flex items-end gap-1">
             <span className="h-8 w-1/4 rounded bg-[#252a32]" />
@@ -278,7 +261,6 @@ function ThemeCard({
               <span className="h-2 w-2 rounded-full bg-[#2f353d]" />
               <span className="h-2 w-2 rounded-full bg-[#2f353d]" />
             </div>
-            <span className="font-badge-micro text-badge-micro text-[#2b3139]">{tag}</span>
           </div>
           <div className="flex items-end gap-1">
             <span className="h-8 w-1/4 rounded bg-white/70" />
@@ -297,7 +279,6 @@ function ThemeCard({
               <span className="h-2 w-2 rounded-full bg-[#859587]" />
               <span className="h-2 w-2 rounded-full bg-[#859587]" />
             </div>
-            <span className="font-badge-micro text-badge-micro text-[#dde3ed]">{tag}</span>
           </div>
           <div className="relative z-10 flex h-full items-center justify-center">
             <Icon name="desktop_windows" className="text-[24px] text-[#859587]" />

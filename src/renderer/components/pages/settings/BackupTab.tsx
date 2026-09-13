@@ -56,7 +56,7 @@ function MetricCard({
   return (
     <div className="group relative flex flex-col justify-between overflow-hidden rounded-lg bg-surface-container-high p-space-md shadow-md transition-all hover:bg-surface-variant">
       <div className="mb-space-xs flex items-center justify-between">
-        <span className="truncate font-code-sm text-code-sm font-semibold uppercase text-on-surface-variant">{label}</span>
+        <span className="truncate font-body-sm text-body-sm font-medium text-on-surface-variant">{label}</span>
         <Icon name={icon} className={`text-[18px] ${iconColor}`} />
       </div>
       <div className="space-y-0.5">
@@ -64,7 +64,7 @@ function MetricCard({
           {value}
           {unit && <span className="font-body-sm text-body-sm font-normal text-on-surface-variant"> {unit}</span>}
         </div>
-        <div className="flex items-center gap-1 font-badge-micro text-badge-micro font-semibold text-outline">{caption}</div>
+        <div className="flex items-center gap-1 font-body-sm text-body-sm text-outline">{caption}</div>
       </div>
       <div className="mt-3 h-1.5 w-full overflow-hidden rounded-full bg-surface-container-lowest">
         <div className={`h-full ${barColor}`} style={{ width: `${Math.min(100, Math.max(0, bar))}%` }} />
@@ -150,18 +150,12 @@ export function BackupTab({ diagnostics }: { diagnostics: DiagnosticsInfo | null
           <div className="max-w-2xl space-y-space-xs">
             <div className="flex items-center gap-space-xs">
               <Icon name="inventory_2" className="text-[20px] text-primary" />
-              <h2 className="whitespace-nowrap font-headline-sm text-headline-sm uppercase tracking-wide text-on-surface">Backup das instâncias</h2>
-              <span className="rounded bg-surface-container px-2 py-0.5 font-badge-micro text-badge-micro uppercase text-on-surface-variant">Organização</span>
+              <h2 className="whitespace-nowrap font-headline-sm text-headline-sm font-semibold text-on-surface">Backup das instâncias</h2>
             </div>
             <p className="font-body-md text-body-md text-on-surface-variant">
               Salva só os nomes, cores, ícones, ordem e agrupamentos das instâncias, nunca o login ou os dados da sessão. Útil para
               não perder a organização da lista; não substitui autenticar de novo se os dados da sessão forem apagados.
             </p>
-            <div className="flex items-center gap-space-md pt-space-xs">
-              <span className="flex items-center gap-1 font-code-sm text-code-sm text-outline">
-                <span className="h-1.5 w-1.5 rounded-full bg-primary" /> Arquivo .json que você guarda onde quiser
-              </span>
-            </div>
           </div>
           <div className="flex flex-wrap items-center gap-space-sm pt-space-sm lg:pt-0">
             <button
@@ -188,10 +182,7 @@ export function BackupTab({ diagnostics }: { diagnostics: DiagnosticsInfo | null
         <div className="flex flex-wrap items-center justify-between gap-space-xs">
           <div className="flex flex-wrap items-center gap-space-xs">
             <Icon name="monitor_heart" className="text-[20px] text-secondary" />
-            <h2 className="whitespace-nowrap font-headline-sm text-headline-sm uppercase tracking-wide text-on-surface">Diagnóstico do sistema</h2>
-            <span className="rounded bg-secondary-container/20 px-2 py-0.5 font-badge-micro text-badge-micro font-semibold uppercase text-secondary">
-              Atualiza a cada 5s
-            </span>
+            <h2 className="whitespace-nowrap font-headline-sm text-headline-sm font-semibold text-on-surface">Diagnóstico do sistema</h2>
           </div>
           <div className="flex items-center gap-space-sm">
             <button
@@ -214,7 +205,7 @@ export function BackupTab({ diagnostics }: { diagnostics: DiagnosticsInfo | null
         </div>
 
         <div className="grid grid-cols-2 gap-gutter md:grid-cols-3 2xl:grid-cols-6">
-          <MetricCard label="Instâncias" icon="dns" iconColor="text-primary" value={String(d?.totalAccounts ?? '—')} valueColor="text-primary" caption="CONFIGURADAS" bar={d && d.totalAccounts > 0 ? 100 : 0} barColor="bg-primary shadow-[0_0_10px_rgba(0,220,130,0.4)]" />
+          <MetricCard label="Instâncias" icon="dns" iconColor="text-primary" value={String(d?.totalAccounts ?? '—')} valueColor="text-primary" caption="configuradas" bar={d && d.totalAccounts > 0 ? 100 : 0} barColor="bg-primary shadow-[0_0_10px_rgba(0,220,130,0.4)]" />
           <MetricCard
             label="Carregadas"
             icon="sync_saved_locally"
@@ -223,13 +214,13 @@ export function BackupTab({ diagnostics }: { diagnostics: DiagnosticsInfo | null
             valueColor="text-secondary"
             caption={
               <>
-                <span className="font-bold text-primary">{loadedPct.toFixed(1)}%</span> EM MEMÓRIA
+                <span className="font-bold text-primary">{loadedPct.toFixed(0)}%</span> em memória
               </>
             }
             bar={loadedPct}
             barColor="bg-secondary"
           />
-          <MetricCard label="Volume log" icon="description" iconColor="text-on-surface-variant" value={d ? formatBytes(d.logSizeBytes).split(' ')[0] : '—'} unit={d ? formatBytes(d.logSizeBytes).split(' ')[1] : undefined} caption="TAMANHO DO ARQUIVO" bar={logPct} barColor="bg-primary-fixed-dim" />
+          <MetricCard label="Volume log" icon="description" iconColor="text-on-surface-variant" value={d ? formatBytes(d.logSizeBytes).split(' ')[0] : '—'} unit={d ? formatBytes(d.logSizeBytes).split(' ')[1] : undefined} caption="tamanho do arquivo" bar={logPct} barColor="bg-primary-fixed-dim" />
           <MetricCard
             label="Memória RAM"
             icon="memory"
@@ -237,7 +228,7 @@ export function BackupTab({ diagnostics }: { diagnostics: DiagnosticsInfo | null
             value={d ? (d.memoryBytes / (1024 * 1024)).toFixed(1) : '—'}
             unit="MB"
             valueColor="text-tertiary"
-            caption={`${memPct.toFixed(1)}% DA MEMÓRIA DO PC`}
+            caption={`${memPct.toFixed(1)}% da memória do PC`}
             bar={memPct}
             barColor="bg-tertiary shadow-[0_0_10px_rgba(0,220,130,0.4)]"
           />
@@ -248,22 +239,19 @@ export function BackupTab({ diagnostics }: { diagnostics: DiagnosticsInfo | null
             value={d ? String(d.cpuPercent) : '—'}
             unit="%"
             valueColor="text-primary"
-            caption="SOMA DE TODOS OS PROCESSOS"
+            caption="soma dos processos"
             bar={d?.cpuPercent ?? 0}
             barColor="bg-primary"
           />
-          <MetricCard label="Processos" icon="view_timeline" iconColor="text-secondary" value={String(d?.processCount ?? '—')} caption="JANELA + INSTÂNCIAS" bar={d ? Math.min(100, d.processCount * 3) : 0} barColor="bg-secondary-container" />
+          <MetricCard label="Processos" icon="view_timeline" iconColor="text-secondary" value={String(d?.processCount ?? '—')} caption="janela + instâncias" bar={d ? Math.min(100, d.processCount * 3) : 0} barColor="bg-secondary-container" />
         </div>
 
         <div className="space-y-space-xs rounded-lg bg-surface-container-lowest p-space-md">
           <div className="flex items-center justify-between pb-space-xs">
             <div className="flex items-center gap-space-xs">
-              <span className="h-2 w-2 animate-pulse rounded-full bg-primary" />
-              <span className="font-code-sm text-code-sm uppercase text-primary">Log de diagnóstico</span>
+              <span className="font-title-md text-title-md font-semibold text-on-surface">Log de diagnóstico</span>
             </div>
-            <span className="rounded bg-surface-container px-2 py-0.5 font-badge-micro text-badge-micro text-outline">
-              últimas {expanded ? 80 : 6} linhas
-            </span>
+            <span className="font-body-sm text-body-sm text-outline">últimas {expanded ? 80 : 6} linhas</span>
           </div>
           <div className={'select-text space-y-1 overflow-x-auto rounded bg-surface-container-low/50 p-space-sm font-code-sm text-code-sm text-on-surface-variant ' + (expanded ? 'max-h-72 overflow-y-auto' : '')}>
             {logLines.length === 0 ? (
@@ -293,8 +281,7 @@ export function BackupTab({ diagnostics }: { diagnostics: DiagnosticsInfo | null
           <div className="max-w-2xl space-y-space-xs">
             <div className="flex items-center gap-space-xs">
               <Icon name="hard_drive" className="text-[20px] text-secondary" />
-              <h2 className="whitespace-nowrap font-headline-sm text-headline-sm uppercase tracking-wide text-on-surface">Espaço em disco</h2>
-              <span className="rounded bg-surface-container px-2 py-0.5 font-badge-micro text-badge-micro uppercase text-on-surface-variant">Cache</span>
+              <h2 className="whitespace-nowrap font-headline-sm text-headline-sm font-semibold text-on-surface">Espaço em disco</h2>
             </div>
             <p className="font-body-md text-body-md text-on-surface-variant">
               Apaga o cache de imagens e arquivos temporários de todas as instâncias. Não desconecta nenhuma conta, não pede QR Code
@@ -324,8 +311,8 @@ export function BackupTab({ diagnostics }: { diagnostics: DiagnosticsInfo | null
           <div className="max-w-2xl space-y-space-xs">
             <div className="flex items-center gap-space-xs">
               <Icon name="monitoring" className="text-[20px] text-error" />
-              <h2 className="whitespace-nowrap font-headline-sm text-headline-sm uppercase tracking-wide text-on-surface">Histórico do Analytics</h2>
-              <span className="rounded bg-error/15 px-2 py-0.5 font-badge-micro text-badge-micro uppercase text-error">Irreversível</span>
+              <h2 className="whitespace-nowrap font-headline-sm text-headline-sm font-semibold text-on-surface">Histórico do Analytics</h2>
+              <span className="font-body-sm text-body-sm text-error">(não dá para desfazer)</span>
             </div>
             <p className="font-body-md text-body-md text-on-surface-variant">
               Apaga todo o histórico de mensagens contabilizado no Analytics. Não afeta as instâncias, conversas ou dados de login.
@@ -342,10 +329,10 @@ export function BackupTab({ diagnostics }: { diagnostics: DiagnosticsInfo | null
         </div>
       </section>
 
-      <div className="flex items-center gap-space-xs rounded bg-surface-container-lowest p-space-md font-code-sm text-code-sm text-on-surface-variant">
-        <Icon name="info" className="text-[16px] text-outline" />
-        <span>Configurações e dados ficam só neste computador e são gravados assim que você altera.</span>
-      </div>
+      <p className="flex items-center gap-space-xs px-space-xs font-body-sm text-body-sm text-outline">
+        <Icon name="info" className="text-[16px]" />
+        Configurações e dados ficam só neste computador.
+      </p>
     </div>
   );
 }
